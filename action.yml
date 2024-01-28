@@ -1,0 +1,83 @@
+name: "Fastlane Build and Deploy"
+description: "Uses Fastlane to build and deploy Android apps"
+author: "Salem Fenn"
+
+inputs:
+  build-type:
+    description: "Type of build, where assemble (APK) or bundle (signed AAB) are valid options."
+    required: true
+    default: "assemble"
+  gradle-task:
+    description: "Name of the gradle task to exec (eg. assembleDebug, assembleRelease, bundleRelease)"
+    required: false
+    default: "assembleDebug"
+  package-name:
+    description: "Package name"
+    required: false
+  keystore-content:
+    description: "Keystore file content as base64 encoded string"
+    required: false
+  keystore-password:
+    description: "Keystore password"
+    required: false
+  keystore-alias:
+    description: "Keystore alias"
+    required: false
+  json-key-data:
+    description: "JSON keystore file content"
+    required: false
+  project-path:
+    description: "Project path"
+    required: true
+  output-path:
+    description: "Output path of the build"
+    required: false
+    default: "output.apk"
+  fastlane-env:
+    description: "env file name to pass to fastlane --env"
+    required: false
+  ruby-version:
+    description: "Ruby version to use"
+    required: false
+    default: "head"
+  node-version:
+    description: "Node version to use"
+    required: false
+    default: "latest"
+  bundler-version:
+    description: "Bundler version to use"
+    default: "2.3"
+    required: false
+  fastlane-version:
+    description: "Fastlane version to use"
+    default: "2.219.0"
+    required: false
+
+runs:
+  using: "composite"
+  steps:
+    - id: "SETUP_RUBY"
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: ${{ inputs.ruby-version }}
+        bundler: ${{ inputs.bundler-version }}
+    - id: "SETUP_NODE"
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ inputs.node-version }}
+    - id: "BEGIN_ACTION"
+      env:
+        BUILD_TYPE: ${{ inputs.build-type }}
+        GRADLE_TASK: ${{ inputs.gradle-task }}
+        PACKAGE_NAME: ${{ inputs.package-name }}
+        KEYSTORE_CONTENT: ${{ inputs.keystore-content }}
+        KEYSTORE_PASSWORD: ${{ inputs.keystore-password }}
+        KEYSTORE_ALIAS: ${{ inputs.keystore-alias }}
+        JSON_KEY_DATA: ${{ inputs.json-key-data }}
+        PROJECT_PATH: ${{ inputs.project-path }}
+        OUTPUT_PATH: ${{ inputs.output-path }}
+        FASTLANE_VERSION: ${{ inputs.fastlane-version }}
+        FASTLANE_ENV: ${{ inputs.fastlane-env }}
+        ACTION_PATH: ${{ github.action_path }}
+      run: . ${{ github.action_path }}/begin-action.sh
+      shell: sh
