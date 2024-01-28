@@ -44,14 +44,6 @@ inputs:
     description: "Node version to use"
     required: false
     default: "latest"
-  bundler-version:
-    description: "Bundler version to use"
-    default: "2.3"
-    required: false
-  fastlane-version:
-    description: "Fastlane version to use"
-    default: "2.219.0"
-    required: false
 
 runs:
   using: "composite"
@@ -60,7 +52,6 @@ runs:
       uses: ruby/setup-ruby@v1
       with:
         ruby-version: ${{ inputs.ruby-version }}
-        bundler: ${{ inputs.bundler-version }}
         bundler-cache: true
     - id: "SETUP_NODE"
       uses: actions/setup-node@v4
@@ -77,7 +68,6 @@ runs:
         JSON_KEY_DATA: ${{ inputs.json-key-data }}
         PROJECT_PATH: ${{ inputs.project-path }}
         OUTPUT_PATH: ${{ inputs.output-path }}
-        FASTLANE_VERSION: ${{ inputs.fastlane-version }}
         FASTLANE_ENV: ${{ inputs.fastlane-env }}
         ACTION_PATH: ${{ github.action_path }}
       run: . ${{ github.action_path }}/begin-action.sh
