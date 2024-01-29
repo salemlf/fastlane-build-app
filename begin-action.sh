@@ -10,10 +10,13 @@ if [ -n "${KEYSTORE_CONTENT}" ]; then
 fi
 
 # If statement used to prevent annoying cp warnings about possible same directories/files
-if [ diff -r -q $PWD $ACTION_PATH != 0]; then
-  cp -r ${ACTION_PATH}/fastlane ./
-  cp ${ACTION_PATH}/Gemfile ./
-fi
+# if [ diff -r -q $PWD $ACTION_PATH != 0]; then
+#   cp -r ${ACTION_PATH}/fastlane ./
+#   cp ${ACTION_PATH}/Gemfile ./
+# fi
+
+cp -r ${ACTION_PATH}/fastlane ./
+cp ${ACTION_PATH}/Gemfile ./
 
 bundle add fastlane --version ${FASTLANE_VERSION}
 bundle install
