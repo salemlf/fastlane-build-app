@@ -61,6 +61,7 @@ runs:
       with:
         ruby-version: ${{ inputs.ruby-version }}
         bundler: ${{ inputs.bundler-version }}
+        bundler-cache: true
     - id: "SETUP_NODE"
       uses: actions/setup-node@v4
       with:
