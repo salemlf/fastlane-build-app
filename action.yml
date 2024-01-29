@@ -35,7 +35,7 @@ inputs:
     default: "output.apk"
   bundler-version:
     description: "Bundler version to use"
-    default: "2.3"
+    default: "2.5.5"
     required: false
   fastlane-version:
     description: "Fastlane version to use"
