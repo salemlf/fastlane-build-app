@@ -15,7 +15,7 @@ if [ diff -r -q $PWD $ACTION_PATH != 0]; then
   cp ${ACTION_PATH}/Gemfile ./
 fi
 
-bundle add fastlane
+bundle add fastlane --version ${FASTLANE_VERSION}
 bundle install
 
 if [ -n "${FASTLANE_ENV}" ]; then

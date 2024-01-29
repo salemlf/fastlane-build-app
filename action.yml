@@ -33,6 +33,10 @@ inputs:
     description: "Output path of the build"
     required: false
     default: "output.apk"
+  fastlane-version:
+    description: "Fastlane version to use"
+    default: "2.219.0"
+    required: false
   fastlane-env:
     description: "env file name to pass to fastlane --env"
     required: false
@@ -52,10 +56,6 @@ runs:
       uses: ruby/setup-ruby@v1
       with:
         ruby-version: ${{ inputs.ruby-version }}
-        bundler-cache: true
-    # - id: "SETUP_FASTLANE"
-    #   run: bundle install
-    #   shell: sh
     - id: "SETUP_NODE"
       uses: actions/setup-node@v4
       with:
@@ -71,6 +71,7 @@ runs:
         JSON_KEY_DATA: ${{ inputs.json-key-data }}
         PROJECT_PATH: ${{ inputs.project-path }}
         OUTPUT_PATH: ${{ inputs.output-path }}
+        FASTLANE_VERSION: ${{ inputs.fastlane-version }}
         FASTLANE_ENV: ${{ inputs.fastlane-env }}
         ACTION_PATH: ${{ github.action_path }}
       run: . ${{ github.action_path }}/begin-action.sh
