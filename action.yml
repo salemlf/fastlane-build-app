@@ -33,6 +33,10 @@ inputs:
     description: "Output path of the build"
     required: false
     default: "output.apk"
+  bundler-version:
+    description: "Bundler version to use"
+    default: "2.3"
+    required: false
   fastlane-version:
     description: "Fastlane version to use"
     default: "2.219.0"
@@ -56,6 +60,7 @@ runs:
       uses: ruby/setup-ruby@v1
       with:
         ruby-version: ${{ inputs.ruby-version }}
+        bundler: ${{ inputs.bundler-version }}
     - id: "SETUP_NODE"
       uses: actions/setup-node@v4
       with:
