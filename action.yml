@@ -53,6 +53,9 @@ runs:
       with:
         ruby-version: ${{ inputs.ruby-version }}
         bundler-cache: true
+    - id: "SETUP_FASTLANE"
+      run: bundle install
+      shell: sh
     - id: "SETUP_NODE"
       uses: actions/setup-node@v4
       with:
