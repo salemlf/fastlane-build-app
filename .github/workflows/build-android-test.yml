@@ -44,9 +44,9 @@ jobs:
           node-version: "20.11.0"
           fastlane-version: "2.219.0"
           bundler-version: "2.5.5"
-          keystore-content: ${{ secrets.KEYSTORE_CONTENT }}
-          keystore-password: ${{ secrets.KEYSTORE_PASSWORD }}
-          keystore-alias: ${{ secrets.KEYSTORE_ALIAS }}
+          keystore-content: ${{ secrets.CAP_APP_KEYSTORE_CONTENT }}
+          keystore-password: ${{ secrets.CAP_APP_KEYSTORE_PASSWORD }}
+          keystore-alias: ${{ secrets.CAP_APP_KEYSTORE_ALIAS }}
           output-path: test-capacitor-app.aab
   test-android-assemble-debug:
     runs-on: ubuntu-latest
