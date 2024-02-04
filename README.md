@@ -18,14 +18,16 @@ There's an `.actrc` file in the root dir that passes in the following default op
 - `--container-architecture linux/amd64`: only necessary if you're running on an M1+ Mac chip
 - `--eventpath testing/event.json`: passes in a path to a JSON file that simulates GitHub events, in this case it sets `github.event.act` to `true`, which is used in a workflow step to determine whether or not the Android SDK should be installed (it's installed by default on IRL GitHub runners, but not in `act`)
 
+Syntax:
+
 ```bash
-act -j <JOB_NAME_TO_RUN> --secret-file .env-test-action --container-architecture linux/amd64
+act -j <JOB_NAME_TO_RUN> --secret-file .env-test-action
 ```
 
 Example:
 
 ```bash
-act -j test-android-bundle-release --secret-file .env-test-action --container-architecture linux/amd64
+act -j test-android-bundle-release --secret-file .env-test-action
 ```
 
 ### Setup
