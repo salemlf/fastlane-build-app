@@ -1,11 +1,14 @@
 default_platform(:android)
 
 platform :android do
+  android_dir = ENV["PROJECT_PATH"]
+
   desc "Assemble debug or release APK"
   lane :assemble do
+    gradle(task: 'clean', project_dir: android_dir)
     gradle(
       task: ENV["GRADLE_TASK"],
-      project_dir: ENV["PROJECT_PATH"],
+      project_dir: android_dir,
       flags: "--no-daemon",
     )
 
@@ -19,12 +22,13 @@ platform :android do
     sh("ls", "-la", "..")
     sh("ls", "-la")
 
+    gradle(task: 'clean', project_dir: android_dir)
     gradle(
       task: ENV["GRADLE_TASK"],
-      project_dir: ENV["PROJECT_PATH"],
+      project_dir: android_dir,
       flags: "--no-daemon",
       properties: {
-        "android.injected.signing.store.file" => File.join(Dir.pwd, "..", "keystore.jks"),
+        "android.injected.signing.store.file" => File.join(Dir.pwd, "..", ENV["KEYSTORE_FILE_PATH"]),
         "android.injected.signing.store.password" => ENV["KEYSTORE_PASSWORD"],
         "android.injected.signing.key.alias" => ENV["KEYSTORE_ALIAS"],
         "android.injected.signing.key.password" => ENV["KEYSTORE_PASSWORD"],

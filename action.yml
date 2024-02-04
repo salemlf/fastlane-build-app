@@ -1,7 +1,8 @@
 name: "Fastlane Build and Deploy"
-description: "Uses Fastlane to build and deploy Android apps"
+description: "Uses Fastlane to build and deploy apps"
 author: "Salem Fenn"
 
+# TODO: simplify this, it icky
 inputs:
   build-type:
     description: "Type of build, where assemble (APK) or bundle (signed AAB) are valid options."
@@ -66,7 +67,39 @@ runs:
       uses: actions/setup-node@v4
       with:
         node-version: ${{ inputs.node-version }}
-    - id: "BEGIN_ACTION"
+    - id: "ENSURE_VALID_BUILD_TYPE"
+      env:
+        BUILD_TYPE: ${{ inputs.build-type }}
+      run: |
+        if [ "${BUILD_TYPE}" != "assemble" -a "${BUILD_TYPE}" != "bundle" ]; then
+          echo "Invalid build-type: " ${BUILD_TYPE}
+          exit 1
+        fi
+      shell: sh
+    - id: "CREATE_KEYSTORE_FILE"
+      env:
+        KEYSTORE_CONTENT: ${{ inputs.keystore-content }}
+      run: |
+        if [ -n "${KEYSTORE_CONTENT}" ]; then
+          echo "Creating keystore from content"
+          echo "${KEYSTORE_CONTENT}" | base64 -d > keystore.jks
+        fi
+      shell: sh
+    - id: "INSTALL_FASTLANE"
+      env:
+        FASTLANE_VERSION: ${{ inputs.fastlane-version }}
+      run: bundle add fastlane --version ${FASTLANE_VERSION}
+      shell: sh
+    - id: "COPY_FILES"
+      env:
+        ACTION_PATH: ${{ github.action_path }}
+      run: |
+        if [ diff -r -q $PWD $ACTION_PATH != 0]; then
+          cp -r ${ACTION_PATH}/fastlane ./
+          cp ${ACTION_PATH}/Gemfile ./
+        fi
+      shell: sh
+    - id: "RUN_FASTLANE"
       env:
         BUILD_TYPE: ${{ inputs.build-type }}
         GRADLE_TASK: ${{ inputs.gradle-task }}
@@ -80,5 +113,6 @@ runs:
         FASTLANE_VERSION: ${{ inputs.fastlane-version }}
         FASTLANE_ENV: ${{ inputs.fastlane-env }}
         ACTION_PATH: ${{ github.action_path }}
-      run: . ${{ github.action_path }}/begin-action.sh
+        KEYSTORE_FILE_PATH: keystore.jks
+      run: bundle exec fastlane android ${BUILD_TYPE}
       shell: sh
