@@ -85,6 +85,9 @@ runs:
           echo "${KEYSTORE_CONTENT}" | base64 -d > keystore.jks
         fi
       shell: sh
+    - id: "INSTALL_BUNDLER_PACKAGES"
+      run: bundle install
+      shell: sh
     - id: "INSTALL_FASTLANE"
       env:
         FASTLANE_VERSION: ${{ inputs.fastlane-version }}
