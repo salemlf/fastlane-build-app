@@ -102,6 +102,11 @@ runs:
           cp ${ACTION_PATH}/Gemfile ./
         fi
       shell: sh
+    - id: "INSTALL_FASTLANE"
+      env:
+        FASTLANE_VERSION: ${{ inputs.fastlane-version }}
+      run: bundle add fastlane --version ${FASTLANE_VERSION}
+      shell: sh
     - id: "RUN_FASTLANE"
       env:
         BUILD_TYPE: ${{ inputs.build-type }}
