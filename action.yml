@@ -85,6 +85,15 @@ runs:
           echo "${KEYSTORE_CONTENT}" | base64 -d > keystore.jks
         fi
       shell: sh
+    - id: "COPY_FILES"
+      env:
+        ACTION_PATH: ${{ github.action_path }}
+      run: |
+        if [ diff -r -q $PWD $ACTION_PATH != 0]; then
+          cp -r ${ACTION_PATH}/fastlane ./
+          cp ${ACTION_PATH}/Gemfile ./
+        fi
+      shell: sh
     - id: "INSTALL_BUNDLER_PACKAGES"
       run: bundle install
       shell: sh
