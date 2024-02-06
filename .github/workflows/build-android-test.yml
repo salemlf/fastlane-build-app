@@ -11,8 +11,14 @@ jobs:
   test-android-bundle-release:
     runs-on: ubuntu-latest
     steps:
+      # - name: Checkout
+      #   uses: actions/checkout@v4
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          repository: salemlf/test-fastlane-build-app
+          token: ${{ secrets.TEST_FASTLANE_TOKEN }}
+          path: testing
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
@@ -34,6 +40,8 @@ jobs:
       - name: Set up Android SDK
         if: ${{ github.event.act }}
         uses: android-actions/setup-android@v2
+      - name: Checkout
+        uses: actions/checkout@v4
       - uses: ./
         id: android-bundle-release
         with:
@@ -51,8 +59,14 @@ jobs:
   test-android-assemble-debug:
     runs-on: ubuntu-latest
     steps:
+      # - name: Checkout
+      #   uses: actions/checkout@v4
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          repository: salemlf/test-fastlane-build-app
+          token: ${{ secrets.TEST_FASTLANE_TOKEN }}
+          path: testing
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
@@ -74,6 +88,10 @@ jobs:
       - name: Set up Android SDK
         if: ${{ github.event.act }}
         uses: android-actions/setup-android@v2
+      - name: List files
+        run: ls -la
+      - name: Checkout
+        uses: actions/checkout@v4
       - uses: ./
         id: android-assemble-debug
         with:
